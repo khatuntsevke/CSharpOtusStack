@@ -4,29 +4,29 @@ namespace CSharpOtusStack
 {
     public class AlternativeOtusStack<T> : PerfectStack<T>
     {
-        class StackItem<T>
+        class StackItem<ItemType>
         {
-            public T? item;
-            public StackItem<T>? previousStackItem;            
-            public StackItem()
-            {
-                item = default;
-                previousStackItem = null;
-            }
-            public StackItem(T? initItem, StackItem<T>? initPrevious)
+            public ItemType item;
+            public StackItem<ItemType>? previousStackItem;            
+            public StackItem(ItemType initItem, StackItem<ItemType>? initPrevious)
             {
                 item = initItem;
                 previousStackItem = initPrevious;
-            }
+            }            
         }
 
-        private StackItem<T> _bodyTail;
+        private StackItem<T>? _bodyTail;
         private int _size;
+        public AlternativeOtusStack()
+        {
+            _size = 0;
+            _bodyTail = null;
+        }
         
         /// <summary>
         /// Количество объектов, которые хранит OtusStack
         /// </summary>
-        public int Size
+        public override int Size
         {
             get
             {
@@ -36,25 +36,20 @@ namespace CSharpOtusStack
         /// <summary>
         /// Текущий верхний объект OtusStack
         /// </summary>
-        public T? Top
+        public override T? Top
         {
             get
-            {               
-                return _bodyTail.item;
+            {
+                return (_bodyTail == null) ? default(T) : _bodyTail.item;                
             }
-        }
-        public AlternativeOtusStack()
-        {
-            _bodyTail = new StackItem<T>();
-            _size = 0;
-        }
+        }  
         public AlternativeOtusStack(params T[] args)
         {
-            _bodyTail = new StackItem<T>();
-            _size = 0;
-            foreach (var arg in args)
+            _bodyTail = new StackItem<T>(args[0], null);
+            _size = 1;
+            for(int i = 1; i < args.Length; i++)
             {
-                _bodyTail = new StackItem<T>(arg, _bodyTail);                
+                _bodyTail = new StackItem<T>(args[i], _bodyTail);
                 _size += 1;
             }
         }
@@ -76,7 +71,7 @@ namespace CSharpOtusStack
         {
             T tmpItem;
 
-            if (Size == 0)
+            if (_bodyTail == null)
             {
                 throw new InvalidOperationException("Ошибка! Вызов метода OtusStack.Pop у пустого объекта OtusStack.");
             }
@@ -95,13 +90,17 @@ namespace CSharpOtusStack
         public override T[] ToArray()
         {
             T[] result = new T[Size];
-
-            var currentStackItem = _bodyTail;
-            for (int i = result.Length-1; i >= 0; i--)
+            if (_bodyTail != null)
             {
-                result[i] = currentStackItem.item;
-                currentStackItem = currentStackItem.previousStackItem;
-            }            
+                StackItem<T>? currentStackItem = _bodyTail;
+                for (int i = result.Length - 1; i >= 0; i--)
+                {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    result[i] = currentStackItem.item;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    currentStackItem = currentStackItem.previousStackItem;
+                }
+            }
             return result;
         }
         /// <summary>
