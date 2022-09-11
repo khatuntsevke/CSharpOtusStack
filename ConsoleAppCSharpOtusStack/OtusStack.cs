@@ -42,7 +42,7 @@
         /// <summary>
         /// Количество объектов, которые хранит OtusStack
         /// </summary>
-        public int Size
+        public override int Size
         {
             get
             {
@@ -52,15 +52,11 @@
         /// <summary>
         /// Текущий верхний объект OtusStack
         /// </summary>
-        public T? Top
+        public override T? Top
         {
             get
             {
-                if (_body.Count == 0)
-                {
-                    return default;
-                }
-                return _body[^1];
+                return (Size == 0)? default(T) : _body[^1];                
             }
         }
         /// <summary>
@@ -85,6 +81,6 @@
                 resultStack.Merge(otusStack);
             }
             return resultStack;
-        } 
+        }
     }
 }

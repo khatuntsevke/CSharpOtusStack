@@ -4,8 +4,8 @@ namespace CSharpOtusStack
 {
     public abstract class PerfectStack<T>
     {
-        public int Size { get; }
-        public T? Top { get; }
+        abstract public int Size { get; }
+        abstract public T? Top { get; }
 
         abstract public void Add(T item);
         abstract public T Pop();
