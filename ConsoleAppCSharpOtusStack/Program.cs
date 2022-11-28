@@ -1,7 +1,6 @@
 ﻿using System;
 
-
-namespace CSharpOtusStack
+namespace ConsoleApp
 {
     internal class Program
     {
@@ -46,6 +45,7 @@ namespace CSharpOtusStack
                 Console.WriteLine(ex.Message);
             }
         }
+        
         public static void AdditionalTask1Test()
         {            
             var otusStack1 = new OtusStack<string>("a", "b", "c");
@@ -56,9 +56,10 @@ namespace CSharpOtusStack
             otusStack2.Print();
             Console.WriteLine("Сольём второй стэк в первый.");
             otusStack1.Merge(otusStack2);
-            Console.WriteLine("Первом стэк после слияния: ");
+            Console.WriteLine("Первый стэк после слияния: ");
             otusStack1.Print();            
         }
+        
         public static void AdditionalTask2Test()
         {
             var s1 = new OtusStack<string>("a", "b", "c");
@@ -77,6 +78,7 @@ namespace CSharpOtusStack
             Console.WriteLine("Функция создала и вернула следующий стэк: ");
             otusStack.Print();
         }
+        
         public static void AdditionalTask3Test()
         {
             Console.WriteLine("------- Основное задание c использованием AlternativeOtusStack -------");
@@ -114,6 +116,7 @@ namespace CSharpOtusStack
                 Console.WriteLine(ex.Message);
             }
         }
+        
         public static void AlternativeAdditionalTask1Test()
         {
             var otusStack1 = new AlternativeOtusStack<string>("a", "b", "c");
@@ -127,6 +130,7 @@ namespace CSharpOtusStack
             Console.WriteLine("Первом стэк после слияния: ");
             otusStack1.Print();
         }
+        
         public static void AlternativeAdditionalTask2Test()
         {
             var s1 = new AlternativeOtusStack<string>("a", "b", "c");

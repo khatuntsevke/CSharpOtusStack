@@ -1,14 +1,14 @@
-﻿namespace CSharpOtusStack
+﻿namespace ConsoleApp
 {
     public static class OtusStackExtensions
     {
         public static void Merge<T>(this PerfectStack<T> stack, PerfectStack<T> anotherStack)
         {
-            var anotherStackBody = anotherStack.ToArray();
-            for(int i = (anotherStackBody.Length-1); i >=0; i--)
-            {
-                stack.Add(anotherStackBody[i]);
-            }
+            var anotherStackClone = (PerfectStack<T>)anotherStack.ShallowCopy();
+            while(anotherStackClone.Size != 0)
+            {                
+                stack.Add(anotherStackClone.Pop());
+            }            
         }
     }
 }
