@@ -1,22 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CSharpOtusStack
+﻿namespace ConsoleApp
 {
     public abstract class PerfectStack<T>
     {
-        abstract public int Size { get; }
-        abstract public T? Top { get; }
+        protected abstract T[] _ToArray();
 
-        abstract public void Add(T item);
-        abstract public T Pop();
-        abstract public T[] ToArray();
-        /// <summary>
-        /// Распечатать содержимое объекта в порядке от низа до вершины.
-        /// </summary>
+        protected void _Merge(PerfectStack<T> anotherStack)
+        {
+            var anotherStackBody = anotherStack._ToArray();
+            for (int i = (anotherStackBody.Length - 1); i >= 0; i--)
+            {
+                Add(anotherStackBody[i]);
+            }
+        }
+
+        public abstract object ShallowCopy();        
+
+        public abstract int Size { get; }
+        public abstract T? Top { get; }
+        public abstract void Add(T item);
+        public abstract T Pop();
+
         public void Print()
         {
             Console.Write("[");
-            var body = ToArray();
+            var body = _ToArray();
             for(int i = 0; i < (body.Length-1); i++)
             {
                 Console.Write($"{body[i]}, ");

@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace CSharpOtusStack
+﻿namespace ConsoleApp
 {
     public class AlternativeOtusStack<T> : PerfectStack<T>
     {
@@ -17,32 +15,17 @@ namespace CSharpOtusStack
 
         private StackItem<T>? _bodyTail;
         private int _size;
+
         public AlternativeOtusStack()
         {
             _size = 0;
             _bodyTail = null;
         }
+                
+        public override int Size => _size;
         
-        /// <summary>
-        /// Количество объектов, которые хранит OtusStack
-        /// </summary>
-        public override int Size
-        {
-            get
-            {
-                return _size;
-            }
-        }
-        /// <summary>
-        /// Текущий верхний объект OtusStack
-        /// </summary>
-        public override T? Top
-        {
-            get
-            {
-                return (_bodyTail == null) ? default(T) : _bodyTail.item;                
-            }
-        }  
+        public override T? Top =>  (_bodyTail == null) ? default(T) : _bodyTail.item;            
+          
         public AlternativeOtusStack(params T[] args)
         {
             _bodyTail = new StackItem<T>(args[0], null);
@@ -52,21 +35,14 @@ namespace CSharpOtusStack
                 _bodyTail = new StackItem<T>(args[i], _bodyTail);
                 _size += 1;
             }
-        }
-        /// <summary>
-        /// Добавить объект на верх OtusStack.
-        /// </summary>
-        /// <param name="newItem"></param>
+        }               
+
         public override void Add(T newItem)
         {
             _bodyTail = new StackItem<T>(newItem, _bodyTail);
             _size += 1;
         }
-        /// <summary>
-        /// Изымает объект с верха OtusStack.
-        /// </summary>
-        /// <returns>Объект, который был на верху.</returns>
-        /// <exception cref="InvalidOperationException">Возникает при вызове у объекта нулевого размера</exception>
+        
         public override T Pop()
         {
             T tmpItem;
@@ -83,11 +59,8 @@ namespace CSharpOtusStack
                 return tmpItem;
             }
         }       
-        /// <summary>
-        /// Копирование элементов в новый Array.
-        /// </summary>
-        /// <returns>Ссылка на на созданный Array.</returns>
-        public override T[] ToArray()
+        
+        protected override T[] _ToArray()
         {
             T[] result = new T[Size];
             if (_bodyTail != null)
@@ -103,17 +76,18 @@ namespace CSharpOtusStack
             }
             return result;
         }
-        /// <summary>
-        /// Выполнить слияние произвольного количества объектов OtusStack.
-        /// </summary>
-        /// <param name="args">Неограниченное количество объектов OtusStack.</param>
-        /// <returns>Новый объект OtusStack с элементами каждого стека в порядке параметров, но сами элементы записаны в обратном порядке.</returns>
+
+        public override object ShallowCopy()
+        {
+            return new AlternativeOtusStack<T>(_ToArray()) as object;
+        }
+
         public static AlternativeOtusStack<T> Concat(params AlternativeOtusStack<T>[] args)
         {
             var resultStack = new AlternativeOtusStack<T>();
             foreach (var otusStack in args)
             {
-                resultStack.Merge(otusStack);
+                resultStack._Merge(otusStack);
             }
             return resultStack;
         }
